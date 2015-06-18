@@ -59,10 +59,33 @@ class myNaiveBayes:
                     self.addToTable(word, self.table_name)
 
     def addToTable(self, word, table_name):
-        sql = 'SELECT * FROM '+ self.table_name + \
-                ' WHERE word LIKE ' + word + ';'
-        print sql
+        #sql = 'SELECT word FROM '+ self.table_name + \
+        #        ' WHERE word LIKE ' + word + ';'
+        #sql = 'INSERT INTO '+ self.table_name + " VALUES ('"+ word +"', 1);"
 
+        sql = 'SELECT EXISTS(SELECT * FROM '+ self.table_name +' WHERE word LIKE '+ word +');'
+        self.conn.execute(sql)
+        if self.conn.fetchone():
+            print 'Już jest ', word
+        else:
+            print 'nie ma'
+
+        #if self.conn.execute(sql) == True:
+        #    print "exist"
+        """
+        try:
+            with self.conn:
+                self.conn.execute('''INSERT INTO '''+ self.table_name +''' VALUES(?,?)''', (word, 1))
+        except sqlite3.IntegrityError:
+            print('Record ' + word+ ' already exists')
+
+        """
+
+        #sql = 'SELECT * FROM '+ self.table_name +';'
+        #self.conn.execute(sql)
+        #self.conn.commit()
+        #s = self.conn.fetchone()
+        #print word
 
     def __del__(self):
         self.conn.close()
