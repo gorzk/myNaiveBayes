@@ -59,10 +59,23 @@ class myNaiveBayes:
                     self.addToTable(word, self.table_name)
 
     def addToTable(self, word, table_name):
+        
         #sql = 'SELECT word FROM '+ self.table_name + \
         #        ' WHERE word LIKE ' + word + ';'
         #sql = 'INSERT INTO '+ self.table_name + " VALUES ('"+ word +"', 1);"
+        
+        # CREATE TABLE users('pk' INTEGER PRIMARY KEY, 'name' VARCHAR(100) UNIQUE, 'count' INTEGER) << name bdzie unikatowe
 
+
+        # This will update 2 of the columns. When ID=1 exists, the NAME will be unaffected. 
+        # When ID=1 does not exist, the name will be default (NULL).
+        # INSERT OR REPLACE INTO Employee (id, role, name) 
+        #VALUES (  1, 
+        #    'code monkey',
+        #    (SELECT name FROM Employee WHERE id = 1)
+        #  );
+        
+        
         sql = 'SELECT EXISTS(SELECT * FROM '+ self.table_name +' WHERE word LIKE '+ word +');'
         self.conn.execute(sql)
         if self.conn.fetchone():
