@@ -85,9 +85,10 @@ class myNaiveBayes:
                         self.checkChance(word)
         
     def checkChance(self, word):
-        self.conn.execute("SELECT count(*) FROM ? WHERE word = ?", (self.table_name, word,))
-        
-        
+        #.conn.execute("SELECT count(*) FROM ? WHERE word = ?", (self.table_name, word,))
+        # sprawdzic czy dane slowo wystepuje pobrać counta z bazt spam oraz ham
+        # Liczyc szanse dla wszyskich slow dla obu przypadków (hamChance / spamChance)
+        # Na końcu porownac i skasyfikowac - zapisac w odpowiednim folderze
         
     # Dekonstruktor klasy
     def __del__(self):
