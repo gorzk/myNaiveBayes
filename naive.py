@@ -74,7 +74,7 @@ class myNaiveBayes:
             print('Component %s found in %s row(s)'%(word, data))
             self.conn.execute('SELECT count FROM ' + self.table_name + ' WHERE word = '+ word +';')
             data = self.conn.fetchone()[0]
-            self.conn.execute('INSERT INTO '+ self.table_name + "(count) ( VALUES (?)",(data + 1)
+            self.conn.execute('INSERT INTO '+ self.table_name + "(count) ( VALUES (?)",(data + 1))
             
     def teachMe(self, path):
         for filename in os.listdir(path):
@@ -82,13 +82,16 @@ class myNaiveBayes:
                 for line in f:
                     for word in line.split():
                         pass
-                        #print word
+                        self.checkChance(word)
         
     def checkChance(self, word):
+        self.conn.execute("SELECT count(*) FROM ? WHERE word = ?", (self.table_name, word,))
+        
         
         
     # Dekonstruktor klasy
     def __del__(self):
+        self.conn.commit()
         self.conn.close()
 
 
