@@ -75,6 +75,9 @@ class myNaiveBayes:
         #    (SELECT name FROM Employee WHERE id = 1)
         #  );
         
+        sql = 'INSERT OR REPLACE INTO ' + self.table_name + '(word, count) \
+            VALUES (
+        
         
         sql = 'SELECT EXISTS(SELECT * FROM '+ self.table_name +' WHERE word LIKE '+ word +');'
         self.conn.execute(sql)
