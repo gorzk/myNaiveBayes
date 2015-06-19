@@ -25,8 +25,10 @@
 #      jest większe sklasyfikuj jako spam
 import os
 import sqlite3
+
 ham_set ='/home/krzysztof/codes/py/skull/train_spam_and_ham/train_ham/'
 spam_set = '/home/krzysztof/codes/py/skull/train_spam_and_ham/train_spam/'
+test_set = '/home/krzysztof/codes/py/skull/test/'
 
 class myNaiveBayes:
     
@@ -74,7 +76,15 @@ class myNaiveBayes:
             data = self.conn.fetchone()[0]
             self.conn.execute('INSERT INTO '+ self.table_name + "(count) ( VALUES (?)",(data + 1)
             
-
+    def teachMe(self, path):
+        for filename in os.listdir(path):
+            with open(path + filename, 'rb') as f:
+                for line in f:
+                    for word in line.split():
+                        pass
+                        #print word
+        
+        
     # Dekonstruktor klasy
     def __del__(self):
         self.conn.close()
@@ -83,7 +93,8 @@ class myNaiveBayes:
 
 if __name__ == '__main__':
     myBayes = myNaiveBayes()
-    myBayes.dbQuery('test', spam_set)
+    myBayes.dbQuery('spam', spam_set)
+    myBayes.dbQuery('ham', ham_set)
     
             #sql = 'SELECT word FROM '+ self.table_name + \
         #        ' WHERE word LIKE ' + word + ';'
