@@ -29,18 +29,22 @@ ham_set ='/home/krzysztof/codes/py/skull/train_spam_and_ham/train_ham/'
 spam_set = '/home/krzysztof/codes/py/skull/train_spam_and_ham/train_spam/'
 
 class myNaiveBayes:
+    
+    # Konstruktor klasy
     def __init__(self):
         try:
             self.conn = sqlite3.connect('bayes.db')
         except NameError, x:
             print "Connection failed!", x
             raise
-
+    
+    # Tworzymy baze
+    # Parametry: (nazwa naszej bazy, lokalizacja plików do nauki)
     def dbQuery(self, table_name, spam_or_ham):
         self.table_name = table_name
 
         sql = 'CREATE TABLE IF NOT EXISTS ' + self.table_name + \
-                ' (word TEXT NOT NULL, \
+                ' (Id INTEGER PRIMARY KEY, word TEXT NOT NULL, \
                 count INT NOT NULL);'
         self.conn.execute(sql)
         self.conn.commit()
@@ -59,9 +63,31 @@ class myNaiveBayes:
                     self.addToTable(word, self.table_name)
 
     def addToTable(self, word, table_name):
-        
-        #sql = 'SELECT word FROM '+ self.table_name + \
+        self.conn.execute("SELECT count(*) FROM ? WHERE word = ?", (self.table_name, word,))
+        data = self.conn.fetchone()[0]
+        if data==0:
+            print('There is no component named %s'%word)
+            self.conn.execute('INSERT INTO '+ self.conn.execute( VALUES (Id,'"+ word +"', 1);")
+        else:
+            print('Component %s found in %s row(s)'%(word, data))
+            self.conn.execute('SELECT count FROM ' + self.table_name + ' WHERE word = '+ word +';')
+            data = self.conn.fetchone()[0]
+            
+
+    # Dekonstruktor klasy
+    def __del__(self):
+        self.conn.close()
+
+
+
+if __name__ == '__main__':
+    myBayes = myNaiveBayes()
+    myBayes.dbQuery('test', spam_set)
+    
+            #sql = 'SELECT word FROM '+ self.table_name + \
         #        ' WHERE word LIKE ' + word + ';'
+        
+        
         #sql = 'INSERT INTO '+ self.table_name + " VALUES ('"+ word +"', 1);"
         
         # CREATE TABLE users('pk' INTEGER PRIMARY KEY, 'name' VARCHAR(100) UNIQUE, 'count' INTEGER) << name bdzie unikatowe
@@ -74,18 +100,15 @@ class myNaiveBayes:
         #    'code monkey',
         #    (SELECT name FROM Employee WHERE id = 1)
         #  );
-        
-        sql = 'INSERT OR REPLACE INTO ' + self.table_name + '(word, count) \
-            VALUES (
-        
-        
+
+        """
         sql = 'SELECT EXISTS(SELECT * FROM '+ self.table_name +' WHERE word LIKE '+ word +');'
         self.conn.execute(sql)
         if self.conn.fetchone():
             print 'Już jest ', word
         else:
             print 'nie ma'
-
+        """
         #if self.conn.execute(sql) == True:
         #    print "exist"
         """
@@ -96,19 +119,12 @@ class myNaiveBayes:
             print('Record ' + word+ ' already exists')
 
         """
-
+        # lid = cur.lastrowid
+        # print "The last Id of the inserted row is %d" % lid
+        
+        
         #sql = 'SELECT * FROM '+ self.table_name +';'
         #self.conn.execute(sql)
         #self.conn.commit()
         #s = self.conn.fetchone()
         #print word
-
-    def __del__(self):
-        self.conn.close()
-
-
-
-if __name__ == '__main__':
-    myBayes = myNaiveBayes()
-    myBayes.dbQuery('test', spam_set)
-
