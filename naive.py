@@ -67,11 +67,12 @@ class myNaiveBayes:
         data = self.conn.fetchone()[0]
         if data==0:
             print('There is no component named %s'%word)
-            self.conn.execute('INSERT INTO '+ self.conn.execute( VALUES (Id,'"+ word +"', 1);")
+            self.conn.execute('INSERT INTO '+ self.table_name + " ( VALUES (Id,'"+ word +"', 1);")
         else:
             print('Component %s found in %s row(s)'%(word, data))
             self.conn.execute('SELECT count FROM ' + self.table_name + ' WHERE word = '+ word +';')
             data = self.conn.fetchone()[0]
+            self.conn.execute('INSERT INTO '+ self.table_name + "(count) ( VALUES (?)",(data + 1)
             
 
     # Dekonstruktor klasy
