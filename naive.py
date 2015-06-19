@@ -84,17 +84,24 @@ class myNaiveBayes:
                         pass
                         #print word
         
+    def checkChance(self, word):
+        
         
     # Dekonstruktor klasy
     def __del__(self):
         self.conn.close()
 
 
-
-if __name__ == '__main__':
+def main():
     myBayes = myNaiveBayes()
     myBayes.dbQuery('spam', spam_set)
     myBayes.dbQuery('ham', ham_set)
+    
+
+
+if __name__ == '__main__':
+    main()
+
     
             #sql = 'SELECT word FROM '+ self.table_name + \
         #        ' WHERE word LIKE ' + word + ';'
